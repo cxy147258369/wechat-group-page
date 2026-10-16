@@ -219,6 +219,20 @@
 </div>
 
 <script>
+// 跳转逻辑：如果有 ?c= 参数，Base64 解码后跳转
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var encoded = params.get('c');
+  if (encoded) {
+    try {
+      var base64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
+      while (base64.length % 4 !== 0) base64 += '=';
+      var decoded = decodeURIComponent(escape(atob(base64)));
+      window.location.replace(decoded);
+    } catch (e) {}
+  }
+})();
+
 function showQR() {
   document.getElementById('qrModal').classList.add('active');
 }
